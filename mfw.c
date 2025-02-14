@@ -12,7 +12,7 @@
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    printf("Usage: mfw <filename>\n");
+    fprintf(stderr, "Usage: mfw <filename>\n");
     exit(EXIT_FAILURE);
   }
   const char *file_path = argv[1];
@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   FILE *file = fopen(file_path, "r");
   if (file == NULL) {
     fprintf(stderr, "Couldn't stat %s as file\n", file_path);
-    goto end;
+    exit(EXIT_FAILURE);
   }
   fclose(file);
 
@@ -66,14 +66,19 @@ int main(int argc, char **argv) {
 
       if (event->mask & IN_DELETE && !(event->mask & IN_ISDIR) && is_file_arg) {
         fprintf(stderr, "File deleted. Closing.");
-        goto end;
+        exit(EXIT_FAILURE);
       }
     }
   }
-end:
 
-  inotify_rm_watch(fd, wd);
-  close(fd);
+  /*
+   * Unreachable. We defer this hygiene to the operating
+   * system instead of manually checking, at some arbitrary
+   * point of failure, that these operations should be run.
+   *
+   * inotify_rm_watch(fd, wd);
+   * close(fd);
+   */
 
   return EXIT_FAILURE;
 }
