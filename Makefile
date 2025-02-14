@@ -9,4 +9,7 @@ install: $(PROG)
 uninstall:
 	$(RM) $(DESTDIR)/$(PROG)
 
-.PHONY: all install
+fmt:
+	clang-format -i $(PROG)
+
+.PHONY: all install uninstall fmt
