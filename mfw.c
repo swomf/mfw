@@ -12,7 +12,7 @@
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    printf("Usage: ./watch <filename>\n");
+    printf("Usage: mfw <filename>\n");
     exit(EXIT_FAILURE);
   }
   const char *file_path = argv[1];
