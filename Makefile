@@ -4,7 +4,7 @@ PREFIX ?= /usr/local
 all: $(PROG)
 
 install: $(PROG)
-	install -Dm755 $(PROG) $(PREFIX)/bin
+	install -Dm755 $(PROG) $(PREFIX)/bin/$(PROG)
 
 uninstall:
 	$(RM) $(PREFIX)/bin/$(PROG)
