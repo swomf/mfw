@@ -1,13 +1,13 @@
 PROG := mfw
-DESTDIR ?= /usr/local/bin
+PREFIX ?= /usr/local
 
 all: $(PROG)
 
 install: $(PROG)
-	install -Dm755 $(PROG) $(DESTDIR)
+	install -Dm755 $(PROG) $(PREFIX)/bin
 
 uninstall:
-	$(RM) $(DESTDIR)/$(PROG)
+	$(RM) $(PREFIX)/bin/$(PROG)
 
 fmt:
 	clang-format -i $(PROG)
