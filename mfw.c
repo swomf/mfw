@@ -11,14 +11,24 @@
 #define EVENT_SIZE (sizeof(struct inotify_event))
 
 int main(int argc, char **argv) {
-  if (argc < 2) {
-    fprintf(stderr, "Usage: mfw <filename>\n");
+  if (argc < 3) {
+    fprintf(stderr, "Usage: mfw <filename> <command> [args...]\n");
     exit(EXIT_FAILURE);
   }
   const char *file_path = argv[1];
   const char *file_name = basename(argv[1]);
   const char *dir_name = dirname(argv[1]);
-  const char *cmd = argv[2];
+
+  size_t cmd_length = 0;
+  for (int i = 2; i < argc; i++)
+    cmd_length += strlen(argv[i]) + 1; // +1 for space
+
+  char *cmd = malloc(cmd_length);
+  for (int i = 2; i < argc; i++) {
+    strcat(cmd, argv[i]);
+    if (i < argc - 1)
+      strcat(cmd, " ");
+  }
 
   /* filename is: (1) an existing file (2) readable (3) not a directory */
   FILE *file = fopen(file_path, "r");
@@ -78,6 +88,7 @@ int main(int argc, char **argv) {
    *
    * inotify_rm_watch(fd, wd);
    * close(fd);
+   * free(cmd);
    */
 
   return EXIT_FAILURE;

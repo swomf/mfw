@@ -7,7 +7,7 @@ A microscopic file watch, similar to
 
 ```bash
 # Run pdflatex on file change
-mfw some-file.tex 'pdflatex some-file.tex'
+mfw some-file.tex pdflatex some-file.tex
 ```
 
 If the file disappears, the `mfw` process disappears as well.
