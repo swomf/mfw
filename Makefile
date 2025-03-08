@@ -4,10 +4,10 @@ PREFIX ?= /usr/local
 all: $(PROG)
 
 install: $(PROG)
-	install -Dm755 $(PROG) $(PREFIX)/bin/$(PROG)
+	install -Dm755 $(PROG) $(DESTDIR)$(PREFIX)/bin/$(PROG)
 
 uninstall:
-	$(RM) $(PREFIX)/bin/$(PROG)
+	$(RM) $(DESTDIR)$(PREFIX)/bin/$(PROG)
 
 fmt:
 	clang-format -i $(PROG)
