@@ -18,19 +18,11 @@ If the file disappears, the `mfw` process disappears as well.
 
 ## installation
 
-Build and install to the default `$PREFIX`.
+Requires meson. (Install meson via `pip` or your package manager.)
 
 ```bash
-make
-sudo make install
-```
-
-If `$PREFIX` is unset, `mfw` installs to `/usr/local`.  
-You can also specify a prefix via environment variable:
-
-```bash
-# installs to ~/.local/bin/mfw
-PREFIX=~/.local make install
+meson setup build
+ninja install -C build
 ```
 
 ## features
