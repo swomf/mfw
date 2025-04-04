@@ -1,0 +1,6 @@
+option(
+  'zsh-completions',
+  type: 'boolean',
+  value: true,
+  description: 'Install zsh shell completions.',
+)
