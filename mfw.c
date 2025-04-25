@@ -21,9 +21,15 @@ int main(int argc, char **argv) {
 
   size_t cmd_length = 0;
   for (int i = 2; i < argc; i++)
-    cmd_length += strlen(argv[i]) + 1; // +1 for space
+    cmd_length += strlen(argv[i]) + 1; /* +1 for space and null terminator */
 
   char *cmd = malloc(cmd_length);
+  if (cmd == NULL) {
+    perror("Couldn't malloc for cmd_length");
+    exit(EXIT_FAILURE);
+  }
+
+  /* unload variable user input args into 1 str */
   for (int i = 2; i < argc; i++) {
     strcat(cmd, argv[i]);
     if (i < argc - 1)
@@ -33,6 +39,7 @@ int main(int argc, char **argv) {
   /* filename is: (1) an existing file (2) readable (3) not a directory */
   FILE *file = fopen(file_path, "r");
   if (file == NULL) {
+    free(cmd);
     fprintf(stderr, "Couldn't stat %s as file\n", file_path);
     exit(EXIT_FAILURE);
   }
@@ -44,6 +51,7 @@ int main(int argc, char **argv) {
 
   fd = inotify_init();
   if (fd < 0) {
+    free(cmd);
     perror("Couldn't initialize inotify");
     exit(EXIT_FAILURE);
   }
@@ -58,6 +66,7 @@ int main(int argc, char **argv) {
     i = 0;
     length = read(fd, buf, EVENT_SIZE + NAME_MAX);
     if (length < 0) {
+      free(cmd);
       perror("Couldn't read file descriptor");
       exit(EXIT_FAILURE);
     }
@@ -74,22 +83,23 @@ int main(int argc, char **argv) {
         system(cmd);
       }
 
+      /* FIXME: doesn't detect mv */
       if (event->mask & IN_DELETE && !(event->mask & IN_ISDIR) && is_file_arg) {
         fprintf(stderr, "File deleted. Closing.");
-        exit(EXIT_FAILURE);
+        free(cmd);
+        exit(EXIT_SUCCESS);
       }
     }
   }
 
   /*
-   * Unreachable. We defer this hygiene to the operating
-   * system instead of manually checking, at some arbitrary
-   * point of failure, that these operations should be run.
+   * Unreachable, because the loop above can only return, not break.
+   * Thus we defer the following to the system
    *
    * inotify_rm_watch(fd, wd);
    * close(fd);
    * free(cmd);
    */
 
-  return EXIT_FAILURE;
+  return EXIT_SUCCESS;
 }
