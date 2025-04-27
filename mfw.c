@@ -10,6 +10,11 @@
 
 #define EVENT_SIZE (sizeof(struct inotify_event))
 
+static inline void clear() {
+  if (isatty(fileno(stdout)))
+    system("clear");
+}
+
 int main(int argc, char **argv) {
   if (argc < 3) {
     fprintf(stderr, "Usage: mfw <filename> <command> [args...]\n");
@@ -59,7 +64,7 @@ int main(int argc, char **argv) {
   /* Watch its dir instead. https://unix.stackexchange.com/a/312359 */
   wd = inotify_add_watch(fd, dir_name, IN_MODIFY | IN_DELETE);
 
-  system("clear");
+  clear();
   system(cmd);
 
   while (1) {
@@ -79,7 +84,7 @@ int main(int argc, char **argv) {
 
       int is_file_arg = strcmp(event->name, file_name) == 0 ? 1 : 0;
       if (event->mask & IN_MODIFY && !(event->mask & IN_ISDIR) && is_file_arg) {
-        system("clear");
+        clear();
         system(cmd);
       }
 
