@@ -1,0 +1,8 @@
+m4_include(common)
+
+printf "hi\n" > "$NAME.tmp"
+"$MFW" "$NAME.tmp" cat "$NAME.tmp" 1>> "$NAME.out" 2>>"$NAME.out" &
+sleep 0.05
+rm "$NAME.tmp"
+
+testout "hi\nFile deleted. Closing."

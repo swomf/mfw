@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+NAME="$(readlink -f "$0")"
+TESTING_DIR="$(readlink -f "$(dirname "$NAME")")"
+MFW="${TESTING_DIR}/../mfw"
+[ ! -f "$MFW" ] && make -C "$TESTING_DIR/.." test
+[ -f "$NAME.tmp" ] && rm "$NAME.tmp"
+[ -f "$NAME.out" ] && rm "$NAME.out"
+
+testout() {
+  diffcmd() {
+    echo "$1" | diff "$NAME.out" -q - >/dev/null
+  }
+  if diffcmd "$1"; then
+    printf "\033[1;92m  PASSED\033[0m  test: %s\n" "$(basename "$NAME")"
+    return 0
+  fi
+  printf "\033[1;91m  FAILED\033[0m  test: %s\n" "$(basename "$NAME")"
+  return 1
+}
+
+# NOTE:
+#  $MFW      -- the absolute path of the compiled mfw.c
+#  $NAME     -- the name of the test
+#  testout() -- checks if the $NAME.out file matches the given arg string
+#
+# end of m4

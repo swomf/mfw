@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
   }
 
   /* filename is: (1) an existing file (2) readable (3) not a directory */
+  /* FIXME: does not pass 01-is-file-not-dir test */
   FILE *file = fopen(file_path, "r");
   if (file == NULL) {
     free(cmd);

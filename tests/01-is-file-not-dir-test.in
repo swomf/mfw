@@ -1,0 +1,5 @@
+m4_include(common)
+
+"$MFW" / echo empty 1>/dev/null 2> "$NAME.out" &
+
+testout "Couldn't stat / as file"
