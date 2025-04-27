@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
 
       /* FIXME: doesn't detect mv */
       if (event->mask & IN_DELETE && !(event->mask & IN_ISDIR) && is_file_arg) {
-        fprintf(stderr, "File deleted. Closing.");
+        fprintf(stderr, "File deleted. Closing.\n");
         free(cmd);
         exit(EXIT_SUCCESS);
       }
