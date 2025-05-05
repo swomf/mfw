@@ -10,7 +10,7 @@ all: $(PROG)
 .PHONY: install
 install: $(PROG)
 	install -Dm755 $(PROG) $(DESTDIR)$(PREFIX)/bin/$(PROG)
-	install -Dm644 completions/$(PROG)-completion.zsh $(DESTDIR)$(ZSHCOMPDIR)/_$(PROG)
+	install -Dm644 completions/zsh/_$(PROG) $(DESTDIR)$(ZSHCOMPDIR)/_$(PROG)
 
 .PHONY: uninstall
 uninstall:
