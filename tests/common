@@ -11,6 +11,11 @@ testout() {
   diffcmd() {
     echo "$1" | diff "$NAME.out" -q - >/dev/null
   }
+  # avoid unclosed resource when 'mfw ... &' is being used
+  # note - due to an idiosyncrasy in dash we merely kill
+  #        direct subprocesses
+  #        See: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=482999
+  pkill -P $$
   if diffcmd "$1"; then
     printf "\033[1;92m  PASSED\033[0m  test: %s\n" "$(basename "$NAME")"
     return 0
