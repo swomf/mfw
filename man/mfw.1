@@ -1,0 +1,34 @@
+.TH mfw "1" "August 2025" "" ""
+.SH NAME
+mfw \- μfilewatch
+.SH SYNOPSIS
+.B mfw
+[\fI\,FILE\/\fR]
+[\fI\,command\/\fR
+[\fI\,args...\/\fR]]
+.SH DESCRIPTION
+.PP
+Watch a file, running the given command whenever said file updates.
+.PP
+The command is executed by
+.BR system ()
+and thus has all of its aspects and caveats.
+For example, your shell alias will not be run.
+.PP
+Occasionally, some commands ran through \fBmfw\fR will require user
+input, such as a compile failure in \fBpdftex\fR. When this
+occurs, send user input as normal; in particular, \fBpdftex\fR
+would need a \fB^D\fR\| (an EOF,
+typically Control+D) to continue.
+
+Send \fB^C\fR\| (SIGINT, often Control+C) to quit.
+.SH "SEE ALSO"
+.sp
+\fBsystem\fR(3)
+\fBinotify\fR(7)
+.SH AUTHOR
+Written by swomf <swomf@proton.me>
+.SH "REPORTING BUGS"
+Report any bugs to <https://github.com/swomf/mfw/issues>
+.SH "COPYRIGHT"
+Copyright \(co 2025 swomf. GPLv3.
